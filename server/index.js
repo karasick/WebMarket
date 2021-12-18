@@ -2,19 +2,19 @@ require('dotenv').config()
 const express = require('express')
 const sequelize = require('./db.js')
 const relations = require('./app/relations')
-// const BasketProduct = require('./app/models/BasketProduct')
-// const Brand = require('./app/models/Brand')
-// const BrandCategory = require('./app/models/BrandCategory')
-// const Category = require('./app/models/Category')
-// const Product = require('./app/models/Product')
-// const ProductRating = require('./app/models/ProductRating')
-// const ProductSpecification = require('./app/models/ProductSpecification')
-// const UserBasket = require('./app/models/UserBasket')
-// const User = require('./app/models/User')
+const cors = require('cors')
+const router = require('./routes/index')
+const errorHandler = require('./app/middleware/errorHandler.middleware')
 
 const PORT = process.env.PORT
 
 const app = express()
+
+app.use(cors())
+app.use(express.json())
+app.use('/api', router)
+
+app.use(errorHandler)
 
 const start = async () => {
     try {
