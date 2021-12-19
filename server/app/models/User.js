@@ -1,5 +1,7 @@
 const sequelize = require('../../db')
 const {INTEGER, STRING} = require('sequelize')
+const UserBasket = require("./UserBasket");
+const ProductRating = require("./ProductRating");
 
 const User = sequelize.define('user', {
     id: {
@@ -19,5 +21,8 @@ const User = sequelize.define('user', {
         defaultValue: "user"
     }
 })
+
+// User.hasOne(UserBasket)
+// User.hasMany(ProductRating)
 
 module.exports = User

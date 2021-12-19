@@ -1,5 +1,6 @@
 const sequelize = require('../../db')
 const {INTEGER, STRING} = require('sequelize')
+const Product = require("./Product");
 
 const ProductSpecification = sequelize.define('product_specification', {
     id: {
@@ -15,5 +16,7 @@ const ProductSpecification = sequelize.define('product_specification', {
         type: STRING
     }
 })
+
+// ProductSpecification.belongsTo(Product)
 
 module.exports = ProductSpecification

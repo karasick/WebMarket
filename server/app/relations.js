@@ -10,7 +10,7 @@ const UserBasket = require("./models/UserBasket");
 
 Product.hasMany(BasketProduct)
 Product.hasMany(ProductRating)
-Product.hasMany(ProductSpecification)
+Product.hasMany(ProductSpecification, {as: "specifications"})
 BasketProduct.belongsTo(Product)
 ProductRating.belongsTo(Product)
 ProductSpecification.belongsTo(Product)
