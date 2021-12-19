@@ -5,9 +5,7 @@ const roleMiddleware = require('../../app/middleware/role.middleware')
 
 const router = new Router()
 
-router.get('/', [
-    authMiddleware
-], brandController.getAll)
+router.get('/', brandController.getAll)
 
 router.post('/', [
     authMiddleware, roleMiddleware('admin')
