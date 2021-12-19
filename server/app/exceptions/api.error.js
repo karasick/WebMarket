@@ -6,12 +6,16 @@ class ApiError extends Error {
         this.message = message
     }
 
-    static badRequest(message) {
-        return new ApiError(404, message)
+    static unauthorized(message = "User is not authorized.") {
+        return new ApiError(401, message)
     }
 
-    static forbidden(message) {
+    static forbidden(message = "Access denied.") {
         return new ApiError(403, message)
+    }
+
+    static badRequest(message) {
+        return new ApiError(404, message)
     }
 
     static internal(message) {
