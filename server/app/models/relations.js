@@ -1,12 +1,13 @@
-const Product = require("./models/Product");
-const Category = require("./models/Category");
-const BrandCategory = require("./models/BrandCategory");
-const Brand = require("./models/Brand");
-const BasketProduct = require("./models/BasketProduct");
-const ProductRating = require("./models/ProductRating");
-const ProductSpecification = require("./models/ProductSpecification");
-const User = require("./models/User");
-const UserBasket = require("./models/UserBasket");
+const Product = require("./Product");
+const Category = require("./Category");
+const BrandCategory = require("./BrandCategory");
+const Brand = require("./Brand");
+const BasketProduct = require("./BasketProduct");
+const ProductRating = require("./ProductRating");
+const ProductSpecification = require("./ProductSpecification");
+const User = require("./User");
+const UserBasket = require("./UserBasket");
+const Token = require("./Token");
 
 Product.hasMany(BasketProduct)
 Product.hasMany(ProductRating)
@@ -27,6 +28,7 @@ User.hasOne(UserBasket)
 User.hasMany(ProductRating)
 UserBasket.belongsTo(User)
 ProductRating.belongsTo(User)
+Token.belongsTo(User)
 
 UserBasket.hasMany(BasketProduct)
 BasketProduct.belongsTo(UserBasket)

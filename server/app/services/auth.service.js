@@ -4,12 +4,11 @@ const User = require('../models/User')
 const UserBasket = require('../models/UserBasket')
 const ApiError = require("../exceptions/api.error");
 const tokenService = require('./token.service')
+const UserDTO = require('../dtos/user.dto')
 
 class AuthService {
     async check(user) {
-        const token = tokenService.generateAccess({id: user.id, email: user.email, role: user.role})
 
-        return {token};
     }
 
     async login(email, password) {
@@ -18,15 +17,26 @@ class AuthService {
             throw ApiError.badRequest("User with provided 'email' is not registered.")
         }
 
-        const isPasswordValid = bcrypt.compareSync(password, user.password)
-        if(!isPasswordValid) {
+        const isPasswordsEqual = bcrypt.compareSync(password, user.password)
+        if(!isPasswordsEqual) {
             throw ApiError.unauthorized("Incorrect password.")
         }
 
-        const token = tokenService.generateAccess({id: user.id, email: user.email, role: user.role})
+        const userDTO = new UserDTO(user)
+        const tokens = tokenService.generate({...userDTO})
+        await tokenService.save(userDTO.id, tokens.refreshToken)
 
-        return {token};
+        return {
+            ...tokens,
+            user: userDTO
+        };
 
+    }
+
+    async logout(refreshToken) {
+        const data = await tokenService.remove(refreshToken)
+
+        return data
     }
 
     async register(email, password, role) {
@@ -39,14 +49,52 @@ class AuthService {
             throw ApiError.badRequest("User with provided 'email' already registered.")
         }
 
-        const hashPassword = await bcrypt.hash(password, 5)
-        const user = await User.create({email, password: hashPassword, role})
+        const passwordHash = hashPassword(password)
+        const user = await User.create({email, password: passwordHash, role})
         const userBasket = await UserBasket.create({userId: user.id})
 
-        const token = tokenService.generateAccess({id: user.id, email: user.email, role: user.role})
+        const userDTO = new UserDTO(user)
+        const tokens = tokenService.generate({...userDTO})
+        await tokenService.save(userDTO.id, tokens.refreshToken)
 
-        return {token};
+        return {
+            ...tokens,
+            user: userDTO
+        };
     }
+
+    async refresh(refreshToken) {
+        if(!refreshToken) {
+            throw ApiError.unauthorized()
+        }
+
+        const userData = tokenService.validateRefreshToken(refreshToken)
+        const tokenFromDb = await tokenService.find(refreshToken)
+        if(!userData || !tokenFromDb) {
+            throw ApiError.unauthorized()
+        }
+
+        const user = await User.findOne({where: {id: userData.id}})
+        if(!user) {
+            throw ApiError.badRequest(`User is not found.`);
+        }
+
+        const userDTO = new UserDTO(user)
+        const tokens = tokenService.generate({...userDTO})
+        await tokenService.save(userDTO.id, tokens.refreshToken)
+
+        return {
+            ...tokens,
+            user: userDTO
+        }
+    }
+}
+
+function hashPassword(password) {
+    const salt = bcrypt.genSaltSync(5);
+    const hash = bcrypt.hashSync(password, salt);
+
+    return hash;
 }
 
 module.exports = new AuthService()

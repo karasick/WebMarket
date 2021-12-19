@@ -3,9 +3,10 @@ const express = require('express')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
 const path = require('path')
+const cookieParser = require('cookie-parser')
 const sequelize = require('./db.js')
-const relations = require('./app/relations')
-const router = require('./routes/index')
+// const relations = require('./app/models/relations')
+const apiRouter = require('./routes/api.router')
 const errorHandler = require('./app/middleware/errorHandler.middleware')
 
 const PORT = process.env.PORT
@@ -14,10 +15,11 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+app.use(cookieParser())
 app.use(express.static(path.resolve(__dirname, 'static')))
 app.use(fileUpload({}))
 
-app.use('/api', router)
+app.use('/api', apiRouter)
 
 app.use(errorHandler)
 
