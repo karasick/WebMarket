@@ -1,6 +1,6 @@
 const Router = require('express')
 const router = new Router()
-const authRouter = require('./models/auth/auth.router')
+const authRouter = require('./auth/auth.router')
 const brandRouter = require('./models/brand.router')
 const categoryRouter = require('./models/category.router')
 const productRouter = require('./models/product.router')
