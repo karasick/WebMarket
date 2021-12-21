@@ -7,7 +7,7 @@ import {
     HOME_ROUTE,
     PRODUCT_ROUTE,
     REGISTRATION_ROUTE
-} from "../routes/paths";
+} from "../utils/paths";
 import AdminPanel from "../pages/AdminPanel";
 import Basket from "../pages/Basket";
 import Auth from "../pages/Auth";
