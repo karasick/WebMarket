@@ -2,11 +2,12 @@ import React, {useContext} from 'react';
 import {Context} from "../../index";
 import {Button, Container, Nav, Navbar, Offcanvas} from "react-bootstrap";
 import {ADMIN_PANEL_ROUTE, HOME_ROUTE, LOGIN_ROUTE} from "../../utils/paths";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {observer} from "mobx-react-lite";
 
 const NavBar = observer (() => {
     const {userContext} = useContext(Context)
+    const navigate = useNavigate()
 
     return (
         <Navbar bg="light" expand="lg">
@@ -19,8 +20,8 @@ const NavBar = observer (() => {
                 </Nav>
                 <Nav className="ml-auto d-none d-lg-flex d-xl-flex">
                     {userContext.isAuth ?
-                        <Button className={"float-right"} variant="outline-primary" onClick={() => userContext.setIsAuth(false)}>Logout</Button> :
-                        <Button className={"float-right"} variant="outline-primary" onClick={() => userContext.setIsAuth(true)}>Login</Button> }
+                        <Button className={"float-right"} variant="outline-primary" onClick={() => navigate(HOME_ROUTE)}>Logout</Button> :
+                        <Button className={"float-right"} variant="outline-primary" onClick={() => navigate(LOGIN_ROUTE)}>Login</Button> }
                 </Nav>
                 <Navbar.Offcanvas id="offcanvasNavbar" className={"navbar-light"} aria-labelledby="offcanvasNavbarLabel" placement="end">
                     <Offcanvas.Header closeButton>
