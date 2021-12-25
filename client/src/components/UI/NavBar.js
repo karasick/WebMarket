@@ -1,13 +1,14 @@
 import React, {useContext} from 'react';
 import {Context} from "../../index";
-import {Button, Container, Nav, Navbar, Offcanvas} from "react-bootstrap";
-import {ADMIN_PANEL_ROUTE, HOME_ROUTE, LOGIN_ROUTE} from "../../utils/paths";
-import {Link, useNavigate} from 'react-router-dom';
+import {Container, Nav, Navbar, Offcanvas, Spinner} from "react-bootstrap";
+import {HOME_ROUTE} from "../../utils/paths";
+import {Link} from 'react-router-dom';
 import {observer} from "mobx-react-lite";
+import NavAuthButton from "./Nav/NavAuthButton";
+import NavAdminPanelLink from "./Nav/NavAdminPanelLink";
 
 const NavBar = observer (() => {
-    const {userContext} = useContext(Context)
-    const navigate = useNavigate()
+    const {appContext, userContext} = useContext(Context)
 
     return (
         <Navbar bg="light" expand="lg">
@@ -15,14 +16,14 @@ const NavBar = observer (() => {
                 <Link className={"navbar-brand"} to={HOME_ROUTE}>Web Market</Link>
                 <Navbar.Toggle aria-controls="offcanvasNavbar" />
                 <Nav className="me-auto d-none d-lg-flex d-xl-flex">
-                    {userContext.isAuth ?
-                        <Link className={"nav-link"} to={ADMIN_PANEL_ROUTE}>Admin Panel</Link> : ''}
+                    {userContext.isAuth ? <NavAdminPanelLink/> : ''}
                 </Nav>
-                <Nav className="ml-auto d-none d-lg-flex d-xl-flex">
-                    {userContext.isAuth ?
-                        <Button className={"float-right"} variant="outline-primary" onClick={() => navigate(HOME_ROUTE)}>Logout</Button> :
-                        <Button className={"float-right"} variant="outline-primary" onClick={() => navigate(LOGIN_ROUTE)}>Login</Button> }
-                </Nav>
+                {appContext.isLoading ? <Spinner className="ml-auto d-none d-lg-flex d-xl-flex" animation={"grow"}></Spinner> :
+                    <Nav className="ml-auto d-none d-lg-flex d-xl-flex">
+                        <NavAuthButton isAuth={userContext.isAuth}/>
+                    </Nav>
+                }
+                {appContext.isLoading ? '' :
                 <Navbar.Offcanvas id="offcanvasNavbar" className={"navbar-light"} aria-labelledby="offcanvasNavbarLabel" placement="end">
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title id="offcanvasNavbarLabel">Web Market</Offcanvas.Title>
@@ -30,13 +31,11 @@ const NavBar = observer (() => {
                     <Offcanvas.Body>
                         <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                             {userContext.isAuth ?
-                                <li className="nav-item"><Link className={"nav-link"} to={ADMIN_PANEL_ROUTE}>Admin Panel</Link></li> : ''}
+                                <li className="nav-item"><NavAdminPanelLink/></li> : ''}
                         </ul>
-                        {userContext.isAuth ?
-                            <Button className={"mt-2"} variant="outline-primary" onClick={() => userContext.setIsAuth(false)}>Logout</Button> :
-                            <Button className={"mt-2"} variant="outline-primary" onClick={() => userContext.setIsAuth(true)}>Login</Button>}
+                        <NavAuthButton isAuth={userContext.isAuth}/>
                     </Offcanvas.Body>
-                </Navbar.Offcanvas>
+                </Navbar.Offcanvas>}
             </Container>
         </Navbar>
     );

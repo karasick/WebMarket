@@ -1,10 +1,13 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Card, Container, Form, InputGroup, Row} from "react-bootstrap";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {LOGIN_ROUTE, REGISTRATION_ROUTE} from "../utils/paths";
+import {HOME_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE} from "../utils/paths";
 import AuthService from "../api/AuthService";
+import {Context} from "../index";
 
 const Auth = () => {
+    const {userContext} = useContext(Context)
+
     const location = useLocation()
     const navigate = useNavigate()
 
@@ -14,13 +17,25 @@ const Auth = () => {
     const [password, setPassword] = useState('')
 
     const login = async () => {
-        const response = await AuthService.login(email, password)
-        console.log(response)
+        userContext.login(email, password)
+        .then(() => navigate(HOME_ROUTE))
+        .catch((e) => {
+            if(e.response.data.message)
+                alert(e.response.data.message)
+            else
+                console.log(e)
+        })
     }
 
-    const register = async () => {
-        const response = await AuthService.register(email, password)
-        console.log(response)
+    const register = () => {
+        userContext.register(email, password)
+        .then(() => navigate(HOME_ROUTE))
+        .catch((e) => {
+            if(e.response.data.message)
+                alert(e.response.data.message)
+            else
+                console.log(e)
+        })
     }
 
     return (

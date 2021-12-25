@@ -27,8 +27,7 @@ class AuthService {
         await tokenService.save(userDTO.id, tokens.refreshToken)
 
         return {
-            ...tokens,
-            user: userDTO
+            ...tokens
         };
 
     }
@@ -58,8 +57,7 @@ class AuthService {
         await tokenService.save(userDTO.id, tokens.refreshToken)
 
         return {
-            ...tokens,
-            user: userDTO
+            ...tokens
         };
     }
 
@@ -84,8 +82,7 @@ class AuthService {
         await tokenService.save(userDTO.id, tokens.refreshToken)
 
         return {
-            ...tokens,
-            user: userDTO
+            ...tokens
         }
     }
 }

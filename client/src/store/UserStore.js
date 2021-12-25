@@ -1,4 +1,5 @@
 import {makeAutoObservable} from "mobx";
+import AuthService from "../api/AuthService";
 
 export default class UserStore {
     constructor() {
@@ -22,5 +23,60 @@ export default class UserStore {
 
     get user() {
         return this._user
+    }
+
+    async login(email, password) {
+        try {
+            const responseData = await AuthService.login(email, password)
+            this.setUser(responseData.user)
+            this.setIsAuth(true)
+        }
+        catch (e) {
+            console.log(e)
+            if(e.response.data.message) {
+                console.log(e.response.data.message)
+            }
+            throw e
+        }
+    }
+
+    async register(email, password) {
+        try {
+            const responseData = await AuthService.register(email, password)
+            this.setUser(responseData.user)
+            this.setIsAuth(true)
+        }
+        catch (e) {
+            console.log(e)
+            if(e.response.data.message) {
+                console.log(e.response.data.message)
+            }
+            throw e
+        }
+    }
+
+    async checkAuth() {
+        try {
+            const responseData = await AuthService.refresh();
+
+            localStorage.setItem('token', responseData.accessToken);
+            this.setIsAuth(true);
+            this.setUser(responseData.user);
+        }
+        catch (e) {
+            console.log(e)
+            if(e.response.data.message) {
+                console.log(e.response.data.message)
+            }
+            throw e
+        }
+    }
+
+    async logout() {
+        await AuthService.logout()
+
+        localStorage.removeItem('token');
+        this.setIsAuth(false)
+        this.setUser({})
     }
 }

@@ -1,12 +1,22 @@
 import {$host} from "../http";
+import jwtDecode from "jwt-decode";
 
 export default class AuthService {
     static async register (email, password) {
-        return $host.post('/api/auth/register', {email, password, role: 'admin'})
+        const {data} = await $host.post('/api/auth/register', {email, password, role: 'admin'})
+        return {
+            ...data,
+            user: jwtDecode(data.accessToken)
+        }
+
     }
 
     static async login (email, password) {
-        return await $host.post('/api/auth/login', {email, password})
+        const {data} = await $host.post('/api/auth/login', {email, password})
+        return {
+            ...data,
+            user: jwtDecode(data.accessToken)
+        }
     }
 
     static async logout() {
@@ -14,6 +24,10 @@ export default class AuthService {
     }
 
     static async refresh() {
-        return $host.get('/api/auth/refresh')
+        const {data} = await $host.get('/api/auth/refresh')
+        return {
+            ...data,
+            user: jwtDecode(data.accessToken)
+        }
     }
 }
