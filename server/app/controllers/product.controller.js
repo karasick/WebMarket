@@ -17,7 +17,7 @@ class ProductController {
     async create(req, res, next) {
         try {
             const product = req.body
-            const {image} = req.files
+            const image = req.files?.image
             const newProduct = await productService.create(product, image)
 
             res.json(newProduct)
@@ -35,6 +35,7 @@ class ProductController {
             res.json(product)
         }
         catch (e) {
+            console.log(e)
             next(e)
         }
     }

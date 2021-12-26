@@ -9,32 +9,41 @@ class CategoryService {
     async getAll(searchQuery) {
         let {brandId, categoryId, limit, page} = searchQuery
 
-        limit = limit || 1
+        limit = limit || 10
         page = page || 1
         const offset = page * limit - limit
 
         let products = {};
 
         if(!brandId && !categoryId) {
-            products = await Product.findAndCountAll({limit, offset})
+            products = await Product.findAndCountAll({
+                limit,
+                offset
+            })
         }
 
         if(!brandId && categoryId) {
             products = await Product.findAndCountAll({
-                where: {categoryId}
-            }, limit, offset)
+                where: {categoryId},
+                limit,
+                offset
+            })
         }
 
         if(brandId && !categoryId) {
             products = await Product.findAndCountAll({
-                where: {brandId}
-            }, limit, offset)
+                where: {brandId},
+                limit,
+                offset
+            })
         }
 
         if(brandId && categoryId) {
             products = await Product.findAndCountAll({
-                where: {brandId, categoryId}
-            }, limit, offset)
+                where: {brandId, categoryId},
+                limit,
+                offset
+            })
         }
 
         return products;
@@ -42,20 +51,26 @@ class CategoryService {
 
     async create(product, image) {
         let {name, description, price, brandId, categoryId, specifications} = product
-
-        const imageName = imageService.getNameAndSlice(image.name)
-        const imageExtension = imageService.getExtension(image.name)
-        const imageFileName = imageName + '-' + uuid.v4() + '.' + imageExtension
-        await image.mv(path.resolve(__dirname, '../..', 'static', imageFileName))
-
-        const newProduct = await Product.create({
+        const productData = {
             name,
             description,
             price,
             brandId,
             categoryId,
-            image: imageFileName
-        })
+            image: null
+        }
+
+        if(image) {
+            const imageName = imageService.getNameAndSlice(image.name)
+            const imageExtension = imageService.getExtension(image.name)
+            const imageFileName = imageName + '-' + uuid.v4() + '.' + imageExtension
+
+            await image.mv(path.resolve(__dirname, '../..', 'static', imageFileName))
+
+            productData.image = imageFileName
+        }
+
+        const newProduct = await Product.create(productData)
 
         if(specifications) {
             specifications = JSON.parse(specifications)
@@ -63,8 +78,8 @@ class CategoryService {
                 ProductSpecification.create({
                     title: specification.title,
                     description: specification.description,
-                    productId: product.id
-                })
+                    productId: newProduct.id
+                }).catch((e) => console.log(e))
             })
         }
 

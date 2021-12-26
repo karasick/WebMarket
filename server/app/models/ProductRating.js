@@ -15,7 +15,9 @@ const ProductRating = sequelize.define('product_rating', {
     }
 })
 
-// ProductRating.belongsTo(Product)
-// ProductRating.belongsTo(User)
+// ProductRating.associate = function () {
+//     ProductRating.belongsTo(Product)
+//     ProductRating.belongsTo(User)
+// }
 
 module.exports = ProductRating

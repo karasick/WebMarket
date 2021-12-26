@@ -1,16 +1,27 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Card, Col, Container, Image, ListGroup, Row, Table} from "react-bootstrap";
+import {useParams} from "react-router-dom";
+import ProductService from "../api/ProductService";
+import {API_URL} from "../http";
+import {Context} from "../index";
 
 const Product = () => {
-    const product = {id: 1, name: "Product 1", price: 1000, rating: 1, image: "https://via.placeholder.com/400x300"}
-    const specifications = [
-        {id: 1, title: "Specification 1", description: "Value 1"},
-        {id: 2, title: "Specification 2", description: "Value 2"},
-        {id: 3, title: "Specification 3", description: "Value 3"},
-        {id: 4, title: "Specification 4", description: "Value 4"},
-        {id: 5, title: "Specification 5", description: "Value 5"},
-        {id: 6, title: "Specification 6", description: "Value 6"},
-    ]
+    // const {appContext} = useContext(Context)
+    const [product, setProduct] = useState({specifications: []})
+
+    const {id} = useParams()
+
+    useEffect(() => {
+        ProductService.getOne(id)
+            .then((product) => setProduct(product))
+            .catch((e) => {
+                console.error(e)
+                if(e.response.data.message)
+                    console.error(e.response.data.message)
+            })
+    }, [])
+
+
 
     return (
         <Container className={"mt-5"}>
@@ -21,7 +32,7 @@ const Product = () => {
             </div>
             <Row className={"pt-4 g-4"}>
                 <Col md={8} className={"d-flex justify-content-center"}>
-                    <Image className={"text-center"} src={product.image} fluid/>
+                    <Image className={"text-center"} src={API_URL + product.image} fluid/>
                 </Col>
                 <Col md={4} className={"align-self-center"}>
                     <Card className={"d-flex align-items-center justify-content-around"}>
@@ -30,10 +41,12 @@ const Product = () => {
                     </Card>
                 </Col>
             </Row>
-            <h4 className={"pt-4 pb-1"}>Specifications:</h4>
+            {product.specifications?.length <= 0 ? '' :
+                <h4 className={"pt-4 pb-1"}>Specifications:</h4>
+            }
             <Table striped hover>
                 <tbody>
-                {specifications.map(specification =>
+                {product.specifications.map(specification =>
                     <tr key={specification.id}>
                         <td>{specification.title}</td>
                         <td>{specification.description}</td>

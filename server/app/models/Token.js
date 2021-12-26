@@ -13,6 +13,8 @@ const Token = sequelize.define('token', {
     }
 })
 
-// Token.belongsTo(User)
+// Token.associate = function () {
+//     Token.belongsTo(User)
+// }
 
 module.exports = Token

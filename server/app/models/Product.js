@@ -28,15 +28,17 @@ const Product = sequelize.define('product', {
         defaultValue: 0
     },
     image: {
-        type: STRING,
-        allowNull: false
+        type: STRING
     }
 })
 
-// Product.hasMany(BasketProduct)
-// Product.hasMany(ProductRating)
-// Product.hasMany(ProductSpecification)
-// Product.belongsTo(Brand)
-// Product.belongsTo(Category)
+// Product.associate = function () {
+//     Product.hasMany(BasketProduct)
+//     Product.hasMany(ProductRating)
+//     Product.hasMany(ProductSpecification, {as: "specifications"})
+//
+//     Product.belongsTo(Brand, {foreignKey: 'id'})
+//     Product.belongsTo(Category, {foreignKey: 'id'})
+// }
 
 module.exports = Product

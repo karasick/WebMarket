@@ -4,20 +4,28 @@ import {useNavigate} from "react-router-dom";
 import NavButton from "./NavButton";
 import {Context} from "../../../index";
 
-const NavAuthButton = ({isAuth}) => {
+const NavAuthButton = ({isAuth, onClick}) => {
     const navigate = useNavigate()
 
     const {userContext} = useContext(Context)
 
+    const login = () => {
+        onClick()
+        navigate(LOGIN_ROUTE)
+    }
+
     const logout = () => {
         userContext.logout()
-            .then(() => navigate(HOME_ROUTE))
+            .then(() => {
+                onClick()
+                navigate(HOME_ROUTE)
+            })
             .catch((e) => alert(e))
     }
 
     return (isAuth ?
         <NavButton title={"Logout"} clickHandler={logout}/> :
-        <NavButton title={"Login"} clickHandler={() => navigate(LOGIN_ROUTE)}/>
+        <NavButton title={"Login"} clickHandler={login}/>
     );
 };
 

@@ -9,14 +9,15 @@ const ProductSpecification = sequelize.define('product_specification', {
         autoIncrement: true
     },
     title: {
-        type: STRING,
-        unique: true
+        type: STRING
     },
     description: {
         type: STRING
     }
 })
 
-// ProductSpecification.belongsTo(Product)
+// ProductSpecification.associate = function () {
+//     ProductSpecification.belongsTo(Product)
+// }
 
 module.exports = ProductSpecification

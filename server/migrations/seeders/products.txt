@@ -1,0 +1,4 @@
+"Phone 12 pro"	        "phone"	    1000	"iphone-12-purple-select-2021-a5588ded-9f49-45b7-bb2e-49553eaa66c3.jpg"	    1	1
+"Xiaomi Mi 11 Ultra"	"phone"	    999	   	"XiaomiMi11Ultra-c4d50ef2-0839-4229-ae44-d82bb522f67f.jpg"		            2	1
+"LG GF-V910MBL"	        "fridge"	5999	"GF-V910MBL-1-7b270f45-2d7c-4004-86c0-31fc5a80bc1f.webp"		            3	2
+"Xiaomi Mi TV P1 50"	"tv"	    1999	"3050140395-8dfae28f-945b-416c-9ad2-087fb41c2b82.jpg"			            2	3

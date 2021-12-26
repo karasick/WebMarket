@@ -16,7 +16,9 @@ const Category = sequelize.define('category', {
     }
 })
 
-// Category.hasMany(Product)
-// Category.belongsToMany(Brand, {through: BrandCategory})
+// Category.associate = function () {
+//     Category.hasMany(Product, {foreignKey: 'id', sourceKey: 'userId'})
+//     Category.belongsToMany(Brand, {through: BrandCategory})
+// }
 
 module.exports = Category

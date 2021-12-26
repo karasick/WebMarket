@@ -8,9 +8,9 @@ const userRouter = require('./models/user.router')
 
 router.use('/auth', authRouter)
 
-router.use('/brand', brandRouter)
-router.use('/category', categoryRouter)
-router.use('/product', productRouter)
-router.use('/user', userRouter)
+router.use('/brands', brandRouter)
+router.use('/categories', categoryRouter)
+router.use('/products', productRouter)
+router.use('/users', userRouter)
 
 module.exports = router

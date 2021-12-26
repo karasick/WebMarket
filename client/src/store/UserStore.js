@@ -28,6 +28,8 @@ export default class UserStore {
     async login(email, password) {
         try {
             const responseData = await AuthService.login(email, password)
+
+            localStorage.setItem('token', responseData.accessToken);
             this.setUser(responseData.user)
             this.setIsAuth(true)
         }
@@ -43,6 +45,8 @@ export default class UserStore {
     async register(email, password) {
         try {
             const responseData = await AuthService.register(email, password)
+
+            localStorage.setItem('token', responseData.accessToken);
             this.setUser(responseData.user)
             this.setIsAuth(true)
         }

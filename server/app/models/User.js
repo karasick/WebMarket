@@ -22,7 +22,9 @@ const User = sequelize.define('user', {
     }
 })
 
-// User.hasOne(UserBasket)
-// User.hasMany(ProductRating)
+// User.associate = function () {
+//     User.hasOne(UserBasket)
+//     User.hasMany(ProductRating)
+// }
 
 module.exports = User

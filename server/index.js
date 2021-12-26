@@ -5,7 +5,7 @@ const fileUpload = require('express-fileupload')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const sequelize = require('./db.js')
-// const relations = require('./app/models/relations')
+const relations = require('./app/models/relations')
 const apiRouter = require('./routes/api.router')
 const errorHandler = require('./app/middleware/errorHandler.middleware')
 

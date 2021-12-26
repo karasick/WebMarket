@@ -11,7 +11,9 @@ const BasketProduct = sequelize.define('basket_product', {
     }
 })
 
-// BasketProduct.belongsTo(Product)
-// BasketProduct.belongsTo(UserBasket)
+// BasketProduct.associate = function () {
+//     BasketProduct.belongsTo(Product)
+//     BasketProduct.belongsTo(UserBasket)
+// }
 
 module.exports = BasketProduct

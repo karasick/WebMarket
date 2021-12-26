@@ -1,15 +1,9 @@
 import {makeAutoObservable} from "mobx";
+import CategoryService from "../api/CategoryService";
 
 export default class CategoryStore {
     constructor() {
-        this._categories = [
-            {id: 1, name: "Category 1"},
-            {id: 2, name: "Category 2"},
-            {id: 3, name: "Category 3"},
-            {id: 4, name: "Category 4"},
-            {id: 5, name: "Category 5"},
-            {id: 6, name: "Category 6"},
-        ]
+        this._categories = []
         this._selectedCategory = {}
 
         makeAutoObservable(this)
@@ -29,5 +23,10 @@ export default class CategoryStore {
 
     get selectedCategory() {
         return this._selectedCategory
+    }
+
+    async createCategory(name) {
+        const newCategory = await CategoryService.create({name})
+        return newCategory
     }
 }

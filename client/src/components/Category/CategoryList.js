@@ -3,12 +3,19 @@ import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
 import {ListGroup} from "react-bootstrap";
 import ActionList from "../UI/ActionList";
+import {selectHandler} from "../../utils/handlers";
 
 const CategoryList = observer(() => {
-    const {categoryContext} = useContext(Context)
+    const {categoryContext, productContext} = useContext(Context)
 
     const selectCategory = (category) => {
+        productContext.setPage(1)
         categoryContext.setSelectedCategory(category)
+    }
+
+    const unselectCategory = (category) => {
+        if(categoryContext.selectedCategory === category)
+            categoryContext.setSelectedCategory({})
     }
 
     const isActive = (category) => {
@@ -18,7 +25,8 @@ const CategoryList = observer(() => {
     return (
         <ListGroup>
             <ActionList items={categoryContext.categories}
-                        actionHandler={selectCategory}
+                        actionHandler={(category) => selectHandler(category, categoryContext.selectedCategory,
+                            selectCategory, unselectCategory)}
                         activeChecker={isActive}/>
         </ListGroup>
     );

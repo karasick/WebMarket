@@ -2,7 +2,7 @@ import {BrowserRouter} from "react-router-dom";
 import AppRouter from "./components/AppRouter";
 import NavBar from "./components/UI/NavBar";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect} from "react";
 import {Context} from "./index";
 import {ACCESS_TOKEN_LOCAL_KEY} from "./utils/consts";
 

@@ -11,7 +11,9 @@ const UserBasket = sequelize.define('user_basket', {
     }
 })
 
-// UserBasket.hasMany(BasketProduct)
-// UserBasket.belongsTo(User)
+// UserBasket.associate = function () {
+//     UserBasket.hasMany(BasketProduct)
+//     UserBasket.belongsTo(User)
+// }
 
 module.exports = UserBasket

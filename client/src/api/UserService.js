@@ -1,7 +1,8 @@
 import {$authHost} from "../http";
 
 export default class UserService {
-    static async fetchUsers (email, password) {
-        return $authHost.get('/api/users')
+    static async getAll () {
+        const {data} = await $authHost.get('/api/users')
+        return data
     }
 }
